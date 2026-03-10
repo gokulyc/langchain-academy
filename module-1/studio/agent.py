@@ -1,5 +1,6 @@
 from langchain_core.messages import SystemMessage
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
+from langchain_openrouter import ChatOpenRouter
 
 from langgraph.graph import START, StateGraph, MessagesState
 from langgraph.prebuilt import tools_condition, ToolNode
@@ -34,7 +35,8 @@ def divide(a: int, b: int) -> float:
 tools = [add, multiply, divide]
 
 # Define LLM with bound tools
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenRouter(model="x-ai/grok-4.1-fast")
+# llm = ChatOpenAI(model="gpt-4o")
 llm_with_tools = llm.bind_tools(tools)
 
 # System message
@@ -59,3 +61,19 @@ builder.add_edge("tools", "assistant")
 
 # Compile graph
 graph = builder.compile()
+
+if __name__ == "__main__":
+    # from langfuse import Langfuse
+    # from langfuse.langchain import CallbackHandler
+    from langchain.messages import HumanMessage
+    from langchain_core.callbacks.stdout import StdOutCallbackHandler
+    from rich import print as rprint
+
+    # langfuse_handler = CallbackHandler(
+    # host="http://localhost:3000",  # your local instance
+    # public_key and secret_key from LangFuse UI
+    # )
+    result = graph.invoke(
+        input = {"messages": [HumanMessage("Add 3 and 4. multiply result with 2")]}, config={"callbacks": [StdOutCallbackHandler()]}
+    )
+    rprint(result)

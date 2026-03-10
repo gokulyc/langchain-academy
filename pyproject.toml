@@ -5,8 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "asyncer>=0.0.17",
     "langchain-community>=0.4.1",
     "langchain-core>=1.2.13",
+    "langchain-mcp-adapters>=0.2.1",
     "langchain-openai>=1.1.9",
     "langchain-openrouter>=0.0.2",
     "langchain-tavily>=0.2.17",
@@ -21,3 +23,6 @@ dependencies = [
     "trustcall>=0.0.39",
     "wikipedia>=1.4.0",
 ]
+
+[dependency-groups]
+dev = []
